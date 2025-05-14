@@ -10,7 +10,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Device } from "@/types";
-import { Cpu, BatteryCharging, SolarPanel, AlertTriangle, CheckCircle2, XCircle, Thermometer, Zap, Percent } from "lucide-react";
+import { Cpu, BatteryCharging, PanelTop, AlertTriangle, CheckCircle2, XCircle, Thermometer, Zap, Percent } from "lucide-react";
 
 interface DeviceStatusListProps {
   devices: Device[];
@@ -19,7 +19,7 @@ interface DeviceStatusListProps {
 const DeviceIcon = ({ type }: { type: Device["type"] }) => {
   if (type === "Inverter") return <Cpu className="h-5 w-5 text-muted-foreground" />;
   if (type === "Battery") return <BatteryCharging className="h-5 w-5 text-muted-foreground" />;
-  if (type === "Solar Panel") return <SolarPanel className="h-5 w-5 text-muted-foreground" />;
+  if (type === "Solar Panel") return <PanelTop className="h-5 w-5 text-muted-foreground" />;
   return null;
 };
 
