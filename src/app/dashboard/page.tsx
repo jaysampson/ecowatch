@@ -1,9 +1,9 @@
 
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import type { DashboardData, TimeSeriesDataPoint } from "@/types";
+import type { DashboardData, TimeSeriesDataPoint, Device as AppDeviceType } from "@/types"; // Renamed Device to AppDeviceType to avoid conflict
 import { getInitialDashboardData, simulateDashboardDataUpdate } from "@/lib/mock-data";
-import { getSystemMaintenancePrediction, type PredictiveMaintenanceOutput, type PredictiveMaintenanceInput } from "@/ai/flows/predictive-maintenance-flow";
+import { getSystemMaintenancePrediction, type PredictiveMaintenanceOutput, type PredictiveMaintenanceInput, type DeviceType as AIDeviceType } from "@/ai/flows/predictive-maintenance-flow"; // Renamed DeviceType to AIDeviceType
 
 import { EnergyProductionChart } from "@/components/dashboard/energy-production-chart";
 import { EnergyConsumptionChart } from "@/components/dashboard/energy-consumption-chart";
@@ -14,6 +14,35 @@ import { DeviceStatusList } from "@/components/dashboard/device-status-list";
 import { SystemMaintenanceSummary } from "@/components/dashboard/system-maintenance-summary";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
+
+// Mock prediction data function
+const getMockMaintenancePrediction = (): PredictiveMaintenanceOutput => {
+  // Simulate some devices being passed if needed for mock logic, or keep it static
+  // For this example, a static mock is sufficient.
+  return {
+    overallSystemHealth: "Good",
+    criticalDevices: [
+      {
+        deviceId: "device-mock-0",
+        deviceName: "AlphaSun XT3000 #1 (Simulated)",
+        prediction: "Minor efficiency dip noted. Recommend cleaning within 2 weeks.",
+        reasoning: "Simulated: Efficiency has dropped by 5% over the last 72 hours, possibly due to surface dust.",
+        recommendedActions: ["Clean solar panel surface (Simulated Action).", "Monitor efficiency post-cleaning (Simulated Action)."]
+      },
+      {
+        deviceId: "device-mock-1",
+        deviceName: "PowerWall X #2 (Simulated)",
+        prediction: "Battery temperature slightly elevated. Monitor closely.",
+        reasoning: "Simulated: Battery temperature is 38°C, which is 3°C above its usual peak.",
+        recommendedActions: ["Ensure proper ventilation around the battery unit (Simulated Action).", "Check for any unusual sounds or smells (Simulated Action)."]
+      }
+    ],
+    generalRecommendations: [
+      "Ensure all device firmware is up to date (Simulated Recommendation).",
+      "Perform visual inspection of all connections monthly (Simulated Recommendation)."
+    ]
+  };
+};
 
 
 export default function DashboardPage() {
@@ -40,8 +69,8 @@ export default function DashboardPage() {
       setIsPredictionLoading(true);
       const fetchPrediction = async () => {
         try {
-          // Map Device type from @/types to DeviceType for the AI flow
-          const devicesForAI: PredictiveMaintenanceInput['devices'] = data.devices.map(d => ({
+          // Map Device type from @/types to AIDeviceType for the AI flow
+          const devicesForAI: PredictiveMaintenanceInput['devices'] = data.devices.map((d: AppDeviceType): AIDeviceType => ({ // Explicitly type d and the return
             id: d.id,
             name: d.name,
             type: d.type,
@@ -53,25 +82,33 @@ export default function DashboardPage() {
             temperature: d.temperature,
           }));
 
-          const prediction = await getSystemMaintenancePrediction({ devices: devicesForAI });
+          // console.log("Attempting to fetch REAL maintenance prediction for devices:", devicesForAI);
+          // const prediction = await getSystemMaintenancePrediction({ devices: devicesForAI });
+          
+          // TEMPORARY: Use mock prediction data to bypass potential Genkit/API issues
+          console.warn("USING MOCK MAINTENANCE PREDICTION DATA. Switch to real API call in /src/app/dashboard/page.tsx when ready.");
+          const prediction = getMockMaintenancePrediction();
+          // Simulate a delay as if an API call was made
+          await new Promise(resolve => setTimeout(resolve, 1200)); 
+          // End of temporary mock data section
+
           setSystemMaintenancePrediction(prediction);
+
         } catch (error) {
-          console.error("Error fetching maintenance prediction:", error);
-          setSystemMaintenancePrediction(null); // Set to null or a specific error state
+          console.error("Error during maintenance prediction process:", error);
+          setSystemMaintenancePrediction(null); 
           toast({
             variant: "destructive",
             title: "Maintenance Prediction Error",
-            description: "Could not fetch predictive maintenance insights. Please try again later.",
+            description: "Could not fetch/process predictive maintenance insights. Displaying mock data if available, or check console.",
           });
         } finally {
           setIsPredictionLoading(false);
         }
       };
-      // Fetch prediction initially and then on an interval, e.g., every 30 seconds
-      // For now, let's fetch it when devices data changes, but be mindful of API call frequency in a real app.
+      
       fetchPrediction();
       
-      // Example of fetching less frequently:
       const predictionInterval = setInterval(fetchPrediction, 60000); // Fetch every 60 seconds
       return () => clearInterval(predictionInterval);
 
@@ -90,7 +127,7 @@ export default function DashboardPage() {
   if (isLoading || !data) {
     return (
       <div className="grid gap-4 md:gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {[...Array(8)].map((_, i) => ( // Increased skeleton count for the new card
+        {[...Array(8)].map((_, i) => (
           <Skeleton key={i} className="h-[300px] rounded-lg" />
         ))}
       </div>
@@ -123,3 +160,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
