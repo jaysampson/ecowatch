@@ -126,7 +126,7 @@ export default function DashboardPage() {
 
   if (isLoading || !data) {
     return (
-      <div className="grid gap-4 md:gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-4 md:gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full overflow-x-hidden">
         {[...Array(8)].map((_, i) => (
           <Skeleton key={i} className="h-[300px] rounded-lg" />
         ))}
@@ -135,7 +135,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="grid auto-rows-fr gap-4 md:gap-6 lg:gap-8">
+    <div className="grid auto-rows-fr gap-4 md:gap-6 lg:gap-8 w-full overflow-x-hidden">
       <div className="grid gap-4 md:gap-6 lg:gap-8 xl:grid-cols-2">
         <EnergyProductionChart 
             initialData={data.energyProductionHistory} 
