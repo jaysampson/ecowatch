@@ -1,3 +1,4 @@
+
 "use client";
 import {
   Table,
@@ -52,7 +53,7 @@ export function DeviceStatusList({ devices }: DeviceStatusListProps) {
             {devices.map((device) => (
               <TableRow key={device.id}>
                 <TableCell><DeviceIcon type={device.type} /></TableCell>
-                <TableCell className="font-medium">{device.name}</TableCell>
+                <TableCell className="font-medium break-words">{device.name}</TableCell>
                 <TableCell>{device.type}</TableCell>
                 <TableCell>
                   <Badge variant={device.status === "Online" ? "default" : device.status === "Warning" ? "outline" : "destructive"} className="flex items-center gap-1 w-fit">

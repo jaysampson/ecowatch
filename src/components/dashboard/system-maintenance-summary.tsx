@@ -96,17 +96,17 @@ export function SystemMaintenanceSummary({ predictionData, isLoading }: SystemMa
                   <AccordionTrigger className="text-base hover:no-underline">
                     <div className="flex items-center gap-2">
                         <AlertTriangle className="h-5 w-5 text-destructive" /> 
-                        {device.deviceName}
+                        <span className="break-words text-left">{device.deviceName}</span>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="space-y-3 pl-2 text-sm">
-                    <p><span className="font-semibold">Prediction:</span> {device.prediction}</p>
-                    <p><span className="font-semibold">Reasoning:</span> {device.reasoning}</p>
+                    <p><span className="font-semibold">Prediction:</span> <span className="break-words">{device.prediction}</span></p>
+                    <p><span className="font-semibold">Reasoning:</span> <span className="break-words">{device.reasoning}</span></p>
                     <div>
                       <h4 className="font-semibold mb-1">Recommended Actions:</h4>
                       <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                         {device.recommendedActions.map((action, idx) => (
-                          <li key={idx}>{action}</li>
+                          <li key={idx} className="break-words">{action}</li>
                         ))}
                       </ul>
                     </div>
@@ -133,7 +133,7 @@ export function SystemMaintenanceSummary({ predictionData, isLoading }: SystemMa
             </h3>
             <ul className="list-disc list-inside space-y-1.5 text-sm text-muted-foreground pl-4">
               {predictionData.generalRecommendations.map((rec, idx) => (
-                <li key={idx}>{rec}</li>
+                <li key={idx} className="break-words">{rec}</li>
               ))}
             </ul>
           </div>
