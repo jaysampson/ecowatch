@@ -62,11 +62,11 @@ export function DeviceStatusList({ devices }: DeviceStatusListProps) {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right text-xs text-muted-foreground">
-                  <div className="flex flex-col items-end gap-0.5">
-                    {device.power !== undefined && <span className="flex items-center gap-1"><Zap size={12}/>{device.power.toFixed(1)} kW</span>}
-                    {device.chargeLevel !== undefined && <span className="flex items-center gap-1"><BatteryCharging size={12}/>{device.chargeLevel}%</span>}
-                    {device.health !== undefined && <span className="flex items-center gap-1"><Percent size={12}/>{device.health}% Health</span>}
-                    {device.temperature !== undefined && <span className="flex items-center gap-1"><Thermometer size={12}/>{device.temperature}°C</span>}
+                  <div className="flex flex-col items-end gap-0.5 w-full">
+                    {device.power !== undefined && <span className="flex items-center gap-1"><Zap size={12}/><span className="break-all">{device.power.toFixed(1)} kW</span></span>}
+                    {device.chargeLevel !== undefined && <span className="flex items-center gap-1"><BatteryCharging size={12}/><span className="break-all">{device.chargeLevel}%</span></span>}
+                    {device.health !== undefined && <span className="flex items-center gap-1"><Percent size={12}/><span className="break-all">{device.health}% Health</span></span>}
+                    {device.temperature !== undefined && <span className="flex items-center gap-1"><Thermometer size={12}/><span className="break-all">{device.temperature}°C</span></span>}
                   </div>
                 </TableCell>
               </TableRow>

@@ -1,3 +1,4 @@
+
 "use client";
 import { useState, useEffect } from "react";
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
@@ -28,14 +29,14 @@ export function EnergyConsumptionChart({ initialData, currentConsumption, onData
   
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-         <div className="grid gap-1">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 flex-wrap">
+         <div className="grid gap-1 min-w-0">
             <CardTitle className="text-base font-semibold flex items-center">
                 <Power className="h-5 w-5 mr-2 text-destructive" /> Energy Consumption
             </CardTitle>
             <CardDescription>Last 6 hours</CardDescription>
         </div>
-        <div className="text-right">
+        <div className="text-right min-w-0">
           <p className="text-3xl font-bold text-destructive">{currentConsumption.toFixed(1)} <span className="text-lg font-normal text-muted-foreground">kW</span></p>
           <p className="text-xs text-muted-foreground">Current</p>
         </div>
